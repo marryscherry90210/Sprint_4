@@ -17,7 +17,7 @@ public class FaqTest extends BaseTest {
 
     private MainPage mainPage;
 
-    // Параметризация: индекс вопроса в аккордеоне + ожидаемый (частично) текст ответа.
+    // Параметризация: индекс вопроса в аккордеоне + полный ожидаемый текст ответа.
     private Object[] faqData() {
         return new Object[]{
                 new Object[]{0,
@@ -54,7 +54,7 @@ public class FaqTest extends BaseTest {
         String actualAnswer = mainPage.openFaqAnswer(questionIndex);
 
        assertEquals("Текст ответа на вопрос №" + questionIndex + " не совпадает с ожидаемым",
-                expectedAnswer, actualAnswer);
+                expectedAnswerPart, actualAnswer);
         );
     }
 
