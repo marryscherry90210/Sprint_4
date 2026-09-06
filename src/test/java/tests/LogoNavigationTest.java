@@ -38,8 +38,8 @@ public class LogoNavigationTest extends BaseTest {
         mainPage.switchToNewTab();
         mainPage.waitForUrlToContain("yandex.ru");
        
-        assertTrue("В новой вкладке должен открыться сайт Яндекса",
-                mainPage.getCurrentUrl().contains("yandex.ru"));
+        assertEquals("В новой вкладке должен открыться сайт Яндекса",
+                MainPage.URL, mainPage.getCurrentUrl());
 
         // Закрывать вкладку/браузер здесь не нужно — за это отвечает
         // tearDown() в BaseTest (аннотация @After), который вызывает driver.quit()
