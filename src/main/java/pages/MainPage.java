@@ -100,6 +100,34 @@ public class MainPage {
         driver.switchTo().window(lastTab);
     }
 
+    /**
+     * Ожидает, пока откроется новая вкладка браузера (например, после клика по внешней ссылке).
+     */
+    public void waitForNewTabToOpen() {
+        wait.until(d -> d.getWindowHandles().size() > 1);
+    }
+
+    /**
+     * Ожидает, пока текущий URL не станет равен ожидаемому.
+     */
+    public void waitForUrlToBe(String url) {
+        wait.until(ExpectedConditions.urlToBe(url));
+    }
+
+    /**
+     * Ожидает, пока текущий URL не станет содержать указанную подстроку.
+     */
+    public void waitForUrlToContain(String urlPart) {
+        wait.until(ExpectedConditions.urlContains(urlPart));
+    }
+
+    /**
+     * Возвращает адрес страницы, открытой в текущей активной вкладке.
+     */
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
+    
     // ---Статус заказа ---
 
     public void openOrderStatusForm() {
