@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import pages.MainPage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Тесты раздела «Вопросы о важном» на главной странице.
@@ -54,9 +53,8 @@ public class FaqTest extends BaseTest {
 
         String actualAnswer = mainPage.openFaqAnswer(questionIndex);
 
-        assertTrue(
-                "Ответ на вопрос №" + questionIndex + " не содержит ожидаемый текст. Получено: " + actualAnswer,
-                actualAnswer.contains(expectedAnswerPart)
+       assertEquals("Текст ответа на вопрос №" + questionIndex + " не совпадает с ожидаемым",
+                expectedAnswer, actualAnswer);
         );
     }
 
