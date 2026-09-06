@@ -1,18 +1,18 @@
 package tests;
 
 import org.junit.Test;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.MainPage;
 
-import java.time.Duration;
-
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * Дополнительные тесты (факультативное задание, пункт 1-2):
  * переходы по логотипам в шапке сайта.
+ * Всё ожидание и работа с вкладками браузера вынесены в методы Page Object
+ * ({@link MainPage}) — тест обращается только к готовым методам.
  */
+
 public class LogoNavigationTest extends BaseTest {
 
     @Test
@@ -22,12 +22,10 @@ public class LogoNavigationTest extends BaseTest {
 
         mainPage.clickOrderButtonTop(); // уходим со стартового состояния формы заказа
         mainPage.clickScooterLogo();
-
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.urlToBe(MainPage.URL));
-
+        mainPage.waitForUrlToBe(MainPage.URL);
+        
         assertTrue("После клика по логотипу Самоката должна открыться главная страница",
-                driver.getCurrentUrl().equals(MainPage.URL));
+                MainPage.URL, mainPage.getCurrentUrl());
     }
 
     @Test
@@ -35,20 +33,16 @@ public class LogoNavigationTest extends BaseTest {
         MainPage mainPage = new MainPage(driver).open();
         mainPage.acceptCookies();
 
-        String mainWindow = driver.getWindowHandle();
         mainPage.clickYandexLogo();
-
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(d -> d.getWindowHandles().size() > 1);
+        mainPage.waitForNewTabToOpen();
         mainPage.switchToNewTab();
-
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.urlContains("yandex.ru"));
-
+        mainPage.waitForUrlToContain("yandex.ru");
+       
         assertTrue("В новой вкладке должен открыться сайт Яндекса",
-                driver.getCurrentUrl().contains("yandex.ru"));
+                mainPage.getCurrentUrl().contains("yandex.ru"));
 
-        driver.close();
-        driver.switchTo().window(mainWindow);
+        // Закрывать вкладку/браузер здесь не нужно — за это отвечает
+        // tearDown() в BaseTest (аннотация @After), который вызывает driver.quit()
+        // и закрывает вообще все открытые окна и вкладки.
     }
 }
